@@ -319,9 +319,14 @@ jobs:
               'runtimeMs': 0,
               'deadlineHit': any(bool(s.get('deadlineHit')) for s in shards),
               'planTaskCount': first.get('planTaskCount'),
+              # Rolling-retry boundary is a file-level value (same across
+              # shards), so lift it from the first shard. retry.* are per-shard
+              # tallies summed below. Absent on pre-rolling-retry runs.
+              'originalTaskCount': first.get('originalTaskCount'),
               'dispatched': 0,
               'succeeded': 0,
               'failed': 0,
+              'retry': {'dispatched': 0, 'succeeded': 0, 'failed': 0},
               'sharding': {
                   'workerCount': first_sh.get('workerCount'),
                   'inWorkerConcurrency': first_sh.get('inWorkerConcurrency'),
@@ -350,6 +355,10 @@ jobs:
               merged['dispatched'] += s.get('dispatched') or 0
               merged['succeeded'] += s.get('succeeded') or 0
               merged['failed'] += s.get('failed') or 0
+              r = s.get('retry') or {}
+              merged['retry']['dispatched'] += r.get('dispatched') or 0
+              merged['retry']['succeeded'] += r.get('succeeded') or 0
+              merged['retry']['failed'] += r.get('failed') or 0
               sq = s.get('sqs') or {}
               merged['sqs']['messagesSent'] += sq.get('messagesSent') or 0
               merged['sqs']['messagesSkipped'] += sq.get('messagesSkipped') or 0
