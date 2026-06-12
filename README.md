@@ -9,7 +9,7 @@
 the case where you have a handful of endpoints and want a single static
 binary that you can drop into a cron job, a systemd timer, or a CI runner.
 
-The binary in this repository is build `e8fa7f437c30`.
+The binary in this repository is build `e2293d7c3de6`.
 
 ## Quick start
 
@@ -39,9 +39,9 @@ but each has at least one corner that bites:
 
 ## Project status
 
-pingcheck is used by a handful of small services for cron-driven synthetic checks; this repository holds the published Linux build.
+The tool is intentionally tiny: a single static binary, no config file, all configuration via flags or env.
 
-Last release: **0.9.0** built on `2026-06-12T10:25:12Z`.
+Last release: **0.9.0** built on `2026-06-12T13:27:01Z`.
 
 ## License
 
